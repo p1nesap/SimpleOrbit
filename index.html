@@ -19,8 +19,8 @@
 <script type="text/javascript" id="sns_scripts">// Set up!
 var a_canvas = document.getElementById("a");
 var context = a_canvas.getContext("2d");
-var x_offset = 50; 
-var y_offset = 50;
+var x_offset = 125; 
+var y_offset = 75;
 
 var a = 150; 
 var b = 100; 
@@ -100,8 +100,8 @@ function orbitBody() {
 	var cos_f = (Math.cos(u) - e)/(1 - e * Math.cos(u));
 	//var cos_g = (Math.cos(v) - f)/(1 - f * Math.cos(v));	
 
-    	var sin_f = (Math.sqrt(1 - e*e) * Math.sin (u))/(1 - e * Math.cos(u));
-	var r = a * (1 - e*e)/(1 + e * cos_f);
+    	var sin_f = (Math.sqrt(1 - e) * Math.sin (u))/(1 - e * Math.cos(u));
+	var r = a * (1 - e)/(1 + e * cos_f);
 
 	//var sin_g = (Math.sqrt(1 - f*f) * Math.sin (v))/(1 - f * Math.cos(v));
 	//var rr = c * (1 - f*f)/(1 + f * cos_g);
