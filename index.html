@@ -14,9 +14,8 @@
 <meta name="viewport" content="width=device-width" />
 <title>Simple Orbit</title>
 <body>
-<canvas id="a" width="480" height="320"></canvas></p>
+<canvas id="a" width="800" height="480"></canvas></p>
 
-<script type="text/javascript" id="sns_scripts">// Set up!
 var a_canvas = document.getElementById("a");
 var context = a_canvas.getContext("2d");
 var x_offset = 125; 
@@ -83,7 +82,7 @@ function orbitBody() {
 	var loopCount = 0;
 	// iterate until within 10-6
 	while(loopCount++ < LOOP_LIMIT) {
-		// this should always converge in a small number of iterations - but be paranoid
+		
 		u_next = u + (M - (u - e * Math.sin(u)))/(1 - e * Math.cos(u));
 		//v_next = v + (N - (v - f * Math.sin(v)))/(1 - f * Math.cos(v));
 		if (Math.abs(u_next - u) < 1E-6)
