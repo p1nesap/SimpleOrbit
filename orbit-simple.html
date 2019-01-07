@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 7) & !(IE 8)]><!-->
+<html lang="en-US">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<title>Simple Orbit</title>
+<body>
+<canvas id="a" width="500" height="500"></canvas></p>
+
+<script type="text/javascript" id="sns_scripts">// Set up!
+var a_canvas = document.getElementById("a");
+var context = a_canvas.getContext("2d");
+var x_offset = 250; 
+var y_offset = 150;
+
+var a = 150; 
+var b = 100; 
+var m = 100;
+var e = 0.7;
+
+var c = 100;
+var d = 50;
+var n = 50;
+var f = 0.3;
+
+
+var focus_x = x_offset + a*e;
+var focus_y = y_offset;
+//var focus_xx = x_offset + c*f;
+//var focus_yy = y_offset + d;
+
+
+var orbitPeriod = 2.0 * Math.PI * Math.sqrt(a*a*a/(m*m)); // G=1
+//var orbitPeriodB = 2.0 * Math.PI * Math.sqrt(c*c*c/(n*n)); // G=1
+
+var time = 0;
+var last_x = 0; 
+var last_y = 0; 
+
+// Animated 
+var LOOP_LIMIT = 10;
+
+function drawBody(x, y, color) {
+	// Draw the face
+	context.beginPath();
+	context.arc(focus_x + x, focus_y + y, 4, 0, 2*Math.PI);
+	//context.arc(focus_xx + x, focus_yy + y, 4, 0, 2*Math.PI);
+	//context.closePath();
+	
+	context.fillStyle = "red";
+	context.fill();
+
+	context.lineWidth = 7;
+      	context.strokeStyle = "#FFA500";
+      	context.stroke();
+	
+}
+
+function orbitBody() {
+
+	// hide last position drawn
+	context.clearRect( last_x -10, last_y - 10, 20, 20);
+	//context.clearRect( last_x, last_y);
+
+	// 1) find the relative time in the orbit and convert to Radians
+	var M = 2.0 * Math.PI * time/orbitPeriod;
+	//var N = 2.0 * Math.PI * time/orbitPeriodB;
+
+	// 2) Seed with mean anomaly and solve Kepler's eqn for E
+	var u = M; // seed with mean anomoly
+	//var v = N;
+	var u_next = 0;
+	//var v_next = 0;
+	var loopCount = 0;
+	// iterate until within 10-6
+	while(loopCount++ < LOOP_LIMIT) {
+		// this should always converge in a small number of iterations - but be paranoid
+		u_next = u + (M - (u - e * Math.sin(u)))/(1 - e * Math.cos(u));
+		//v_next = v + (N - (v - f * Math.sin(v)))/(1 - f * Math.cos(v));
+		if (Math.abs(u_next - u) < 1E-6)
+	//&& (Math.abs(v_next - v) < 1E-6))
+			break;
+			
+		u = u_next;
+		
+		//v = v_next;
+	}
+
+	// 2) eccentric anomoly is angle from center of ellipse, not focus (where centerObject is). Convert
+	//    to true anomoly, f - the angle measured from the focus. (see Fig 3.2 in Gravity) 
+	var cos_f = (Math.cos(u) - e)/(1 - e * Math.cos(u));
+	//var cos_g = (Math.cos(v) - f)/(1 - f * Math.cos(v));	
+
+    	var sin_f = (Math.sqrt(1 - e*e) * Math.sin (u))/(1 - e * Math.cos(u));
+	var r = a * (1 - e*e)/(1 + e * cos_f);
+
+	//var sin_g = (Math.sqrt(1 - f*f) * Math.sin (v))/(1 - f * Math.cos(v));
+	//var rr = c * (1 - f*f)/(1 + f * cos_g);
+
+	time = time + 1;
+	// animate
+	last_x = focus_x + r*cos_f;
+	//+ r*cos_g;
+	last_y = focus_y + r*sin_f; 
+	//+ r*sin_g;
+	drawBody( r* cos_f, r*sin_f, /*rr* cos_g, r*sin_g,*/ "blue");
+	
+	setTimeout(orbitBody, 30);
+}
+
+drawBody(0, 0, "red");
+orbitBody();
+
+</script>
+</body>
+</html>
