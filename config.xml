@@ -3,6 +3,6 @@
     xmlns:gap   = "http://phonegap.com/ns/1.0">
 <name>Simple Orbit</name>
 <description>2-body orbit.</description>
-<author>p1nesap</>
+<author>p1nesap</author>
 <icon src="icon.png" />
 </widget>
