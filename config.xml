@@ -1,1 +1,4 @@
- <icon src="icon.png" />
+<name>Simple Orbit</name>
+<description>2-body orbit.</description>
+<author>p1nesap</>
+<icon src="icon.png" />
